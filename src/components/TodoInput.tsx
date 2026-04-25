@@ -15,7 +15,7 @@ export default function TodoInput({ onAdd }: TodoInputProps) {
   };
 
   return (
-    <div className="flex justify-between gap-4 w-full max-w-md">
+    <div className="flex justify-between gap-4 w-full max-w-md ">
       <input
         type="text"
         value={text}
@@ -25,7 +25,7 @@ export default function TodoInput({ onAdd }: TodoInputProps) {
       />
       <button
         onClick={handleAddClick}
-        className="py-2 px-4 bg-pink-500 text-white rounded font-medium hover:bg-pink-600 transition-colors"
+        className="py-2 px-4 bg-blue-700 text-white rounded font-medium hover:bg-blue-800 transition-colors"
       >
         Add Project
       </button>

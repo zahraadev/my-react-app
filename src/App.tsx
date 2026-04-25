@@ -57,13 +57,13 @@ export default function App(){
     })
     
     return(
-        <div className="min-h-screen bg-gray-100 text-white flex flex-col items-center py-10 px-4 font-sans ">
-            <h1 className="text-black font-bold text-3xl mb-10">قائمة المهام</h1>
+        <div className="min-h-screen bg-blue-100 text-white flex flex-col items-center py-10 px-4 font-sans ">
+            <h1 className="text-blue-900 text-3xl mb-14 font-bold">قائمة المهام</h1>
             <TodoInput onAdd={handleadd}/>
-            <div className="flex gap-2 my-6 justify-center w-full max-w-md">
+            <div className="flex gap-2 my-8 justify-center w-full max-w-md">
                 <button onClick={()=> setfilter("all")} className="px-4 py-2 bg-blue-500 text-white rounded">all</button>
                 <button onClick={()=> setfilter("done")} className="px-4 py-2 bg-green-500 text-white rounded">done</button>
-                <button onClick={()=> setfilter("active")} className="px-4 py-2 bg-red-500 text-white rounded">active</button>
+                <button onClick={()=> setfilter("active")} className="px-4 py-2 bg-red-700 text-white rounded">active</button>
             </div>
             <ul className="w-full max-w-md mt-8 flex flex-col gap-2">
                 {filterdtask.map((task)=>(
