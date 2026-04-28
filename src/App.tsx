@@ -1,8 +1,8 @@
 import {useEffect, useState } from "react";
 import TodoInput from "./components/TodoInput";
 import TodoItem from "./components/TodoItem";
-
-
+import Calculate from "./components/Calculate";
+/*
 interface task{
     id: number;
     title: string;
@@ -89,4 +89,12 @@ export default function App(){
         </div>
     )
 
+}*/
+
+export default function App(){
+    return(
+        <div >
+            <Calculate/>
+        </div>
+    )
 }
