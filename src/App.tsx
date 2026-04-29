@@ -1,8 +1,9 @@
-import {useEffect, useState } from "react";
+/*import {useEffect, useState } from "react";
 import TodoInput from "./components/TodoInput";
 import TodoItem from "./components/TodoItem";
-import Calculate from "./components/Calculate";
-/*
+
+
+
 interface task{
     id: number;
     title: string;
@@ -91,10 +92,50 @@ export default function App(){
 
 }*/
 
-export default function App(){
-    return(
-        <div >
-            <Calculate/>
-        </div>
-    )
+
+import React, { useState } from "react";
+import Main from "./components/Main"; // تأكدي إن المسار صح حسب مجلدج
+
+// تعريف شكل البطاقة الواحدة بداخل المصفوفة
+interface cardsType {
+  id: number;
+  text: string;
+  isVisible: boolean;
+}
+
+export default function Game() {
+  // المصفوفة اللي تحتوي على بيانات اللعبة
+  const [cards, setCards] = useState<cardsType[]>([
+    { id: 1, text: "react", isVisible: false },
+    { id: 2, text: "html", isVisible: false },
+    { id: 3, text: "css", isVisible: false },
+    { id: 4, text: "python", isVisible: false },
+  ]);
+
+  // دالة تحديث الحالة عند الضغط على الكارت
+  const handleclick = (id: number) => {
+    setCards(
+      cards.map((card) =>
+        card.id === id ? { ...card, isVisible: !card.isVisible } : card
+      )
+    );
+  };
+
+  return (
+    <div className="min-h-screen bg-gray-50 flex flex-col items-center py-10 font-sans">
+      <h1 className="text-4xl text-indigo-700 font-bold mb-12">Game of Cards</h1>
+      
+      {/* شبكة المربعات (صفين وعمودين) */}
+      <div className="grid grid-cols-2 gap-6">
+        {cards.map((card) => (
+          <Main
+            key={card.id}
+            text={card.text}
+            isVisible={card.isVisible}
+            onFilp={() => handleclick(card.id)}
+          />
+        ))}
+      </div>
+    </div>
+  );
 }

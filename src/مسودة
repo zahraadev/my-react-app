@@ -190,3 +190,89 @@ useEffect(()=>{
         </div>
     )
 }*/
+
+
+import { useState } from "react";
+
+export default function Calculate() {
+  // 1. الخزانات (States)
+  const [firstnumber, setfirstnumber] = useState<number>(0);      // الرقم اللي يظهر بالشاشة
+  const [secondnumber, setsecondnumber] = useState<number>(0);    // الرقم المخزون (الأول)
+  const [result, setresult] = useState<number>(0);                // النتيجة النهائية
+  const [operation, setoperation] = useState<string>("");         // نوع العملية (+, -, *, /)
+
+  // 2. دالة ضغطة الرقم
+  const handlenumberclick = (num: number) => {
+    // إذا جانت الشاشة 0 نكتب الرقم الجديد، وإذا لا نلزقهم (بضرب القديم في 10)
+    setfirstnumber((prev) => prev * 10 + num);
+  };
+
+  // 3. دالة اختيار العملية
+  const handleOperation = (op: string) => {
+    setsecondnumber(firstnumber); // نضم الرقم الحالي بالخزنة
+    setoperation(op);             // نحفظ العلامة
+    setfirstnumber(0);            // نصفر الشاشة حتى نكتب الرقم الثاني
+  };
+
+  // 4. دالة المسح (C)
+  const handleclear = () => {
+    setfirstnumber(0);
+    setsecondnumber(0);
+    setresult(0);
+    setoperation("");
+  };
+
+  // 5. دالة اليساوي (المدير)
+  const calculateResult = () => {
+    let res = 0;
+    if (operation === "+") res = secondnumber + firstnumber;
+    if (operation === "-") res = secondnumber - firstnumber;
+    if (operation === "*") res = secondnumber * firstnumber;
+    if (operation === "/") res = secondnumber / firstnumber;
+
+    setresult(res);        // نحدث ذاكرة النتيجة
+    setfirstnumber(res);   // نعرض النتيجة بالشاشة
+    setoperation("");      // نصفر العملية
+  };
+
+  return (
+    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-50 p-4">
+      <div className="w-full max-w-xs bg-white p-5 rounded-2xl shadow-xl border border-purple-100">
+        
+        {/* الشاشة - تقرأ من firstnumber */}
+        <div className="mb-4">
+            <input 
+              type="text" 
+              value={firstnumber} 
+              readOnly 
+              className="w-full text-right text-3xl p-3 border-2 border-purple-900 rounded-lg bg-gray-50 font-mono"
+            />
+        </div>
+
+        {/* شبكة الأزرار */}
+        <div className="grid grid-cols-4 gap-2">
+          {/* الأرقام من 1-9 */}
+          {[1, 2, 3, 4, 5, 6, 7, 8, 9, 0].map((num) => (
+            <button 
+              key={num}
+              onClick={() => handlenumberclick(num)}
+              className="py-4 bg-purple-300 text-black text-xl font-bold rounded-lg hover:bg-purple-400 transition-all"
+            >
+              {num}
+            </button>
+          ))}
+
+          {/* أزرار العمليات */}
+          <button onClick={() => handleOperation("+")} className="py-4 bg-purple-500 text-white text-xl font-bold rounded-lg">+</button>
+          <button onClick={() => handleOperation("-")} className="py-4 bg-purple-500 text-white text-xl font-bold rounded-lg">-</button>
+          <button onClick={() => handleOperation("*")} className="py-4 bg-purple-500 text-white text-xl font-bold rounded-lg">*</button>
+          <button onClick={() => handleOperation("/")} className="py-4 bg-purple-500 text-white text-xl font-bold rounded-lg">/</button>
+          
+          {/* أزرار التحكم */}
+          <button onClick={handleclear} className="py-4 bg-red-400 text-white text-xl font-bold rounded-lg col-span-2">C</button>
+          <button onClick={calculateResult} className="py-4 bg-green-500 text-white text-xl font-bold rounded-lg col-span-2">=</button>
+        </div>
+      </div>
+    </div>
+  );
+}

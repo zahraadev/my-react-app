@@ -57,6 +57,7 @@ export default function Calculate() {
           ></input>
         </div>
          {/** ازرار الارقام */}
+         
         <div className="grid grid-cols-4 gap-2">
           {[1,2,3,4,5,6,7,8,9,0].map((num)=>(
             <button className="py-4 px-6 rounded bg-indigo-400 text-white text-xl cursor-pointer"
@@ -65,6 +66,7 @@ export default function Calculate() {
             >{num}</button>
           ))}
           {/** ازرار العمليات */}
+          
           <button className="py-4 px-6 rounded bg-indigo-400 text-white text-xl cursor-pointer" onClick={()=> handleOperation("+")}>+</button>
           <button className="py-4 px-6 rounded bg-indigo-400 text-white text-xl cursor-pointer" onClick={()=> handleOperation("-")}>-</button>
           <button className="py-4 px-6 rounded bg-indigo-400 text-white text-xl cursor-pointer" onClick={()=> handleOperation("*")}>*</button>
