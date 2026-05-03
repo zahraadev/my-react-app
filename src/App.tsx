@@ -92,7 +92,7 @@ export default function App(){
 
 }*/
 
-
+/*
 import React, { useState } from "react";
 import Main from "./components/Main"; // تأكدي إن المسار صح حسب مجلدج
 
@@ -125,7 +125,7 @@ export default function Game() {
     <div className="min-h-screen bg-gray-50 flex flex-col items-center py-10 font-sans">
       <h1 className="text-4xl text-indigo-700 font-bold mb-12">Game of Cards</h1>
       
-      {/* شبكة المربعات (صفين وعمودين) */}
+      {/* شبكة المربعات (صفين وعمودين) *//*
       <div className="grid grid-cols-2 gap-6">
         {cards.map((card) => (
           <Main
@@ -135,6 +135,95 @@ export default function Game() {
             onFilp={() => handleclick(card.id)}
           />
         ))}
+      </div>
+    </div>
+  );
+}*/
+/*
+import { useState } from "react";
+import Names from "./components/Names";
+
+interface NamesMain {
+  id: number;
+  name: string;
+  isActive: boolean;
+}
+
+export default function App(){
+
+  const[names, setnames] = useState<NamesMain[]>([
+    {id:1,name: "ali", isActive: false},
+    {id:2,name: "zahraa", isActive: false},
+    {id:3,name: "asraa", isActive: false},
+    {id:4,name: "ahmed", isActive: false},
+    {id:5,name: "alan", isActive: false},
+  ])
+
+  const handleToggle = (id: number)=>{
+    setnames(names.map(name => name.id === id ?{...name, isActive: !name.isActive}: name));
+
+  }
+
+  return(
+    <div className="min-h-screen bg-gray-50 flex flex-col items-center py-10 font-sans">
+      {names.map(name =>(
+        <Names 
+        key={name.id}
+        name={name.name}
+        isActive={name.isActive}
+        onToggle={()=> handleToggle(name.id)}
+        />
+      ))}
+    </div>
+  )
+}*/
+
+import { useState } from "react";
+import Bought from "./components/Bought";
+
+// تعريف شكل العنصر الواحد في المصفوفة
+interface Item {
+  id: number;
+  name: string;
+  isBought: boolean;
+}
+
+export default function App() {
+  // 1. المصفوفة (المخزن)
+  const [items, setItems] = useState<Item[]>([
+    { id: 1, name: "Meat", isBought: false },
+    { id: 2, name: "Milk", isBought: false },
+    { id: 3, name: "Bread", isBought: false },
+    { id: 4, name: "Apples", isBought: false },
+  ]);
+
+  // 2. دالة التغيير (المنطق)
+  const handleToggle = (id: number) => {
+    setItems(
+      items.map((item) =>
+        item.id === id ? { ...item, isBought: !item.isBought } : item
+      )
+    );
+  };
+
+  return (
+    <div className="min-h-screen bg-gray-50 p-8 flex justify-center">
+      <div className="w-full max-w-md">
+        <h1 className="text-2xl font-bold text-center text-blue-800 mb-6">
+          قائمة التسوق الذكية 🛒
+        </h1>
+
+        <div className="flex flex-col">
+          {/* 3. ماكنة الطباعة (الـ map) */}
+          {items.map((item) => (
+            <Bought
+              key={item.id}
+              name={item.name}
+              isBought={item.isBought}
+              onToggle={() => handleToggle(item.id)}
+            />
+          ))}
+        </div>
       </div>
     </div>
   );
