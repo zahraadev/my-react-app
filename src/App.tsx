@@ -177,7 +177,7 @@ export default function App(){
     </div>
   )
 }*/
-
+/*
 import { useState } from "react";
 import Bought from "./components/Bought";
 
@@ -214,7 +214,8 @@ export default function App() {
         </h1>
 
         <div className="flex flex-col">
-          {/* 3. ماكنة الطباعة (الـ map) */}
+          {/* 3. ماكنة الطباعة (الـ map) */
+          /*
           {items.map((item) => (
             <Bought
               key={item.id}
@@ -227,4 +228,46 @@ export default function App() {
       </div>
     </div>
   );
+}*/
+
+import { useState } from "react";
+import Student from "./components/Student";
+
+interface students{
+  id : number;
+  name: string;
+  score: number;
 }
+
+export default function App(){
+
+  const[students, setStudents] = useState<students[]>([
+    {id: 1, name: "zahraa", score: 99},
+    {id: 2, name: "ali", score: 45},
+    {id: 3, name: "ahmed", score: 78},
+    {id: 4, name: "suha", score: 86},
+  ])
+
+  const handlonclick=(id:number, name:string, score:number)=>{
+    alert(`${score>=90 ? "ناجح بتقدير امتياز  ": score >=80 ? "ناجح بتقدير جيد جدا" : score>=70 ? "ناجح بتقدير جيد": score>=60? "ناجح بتقدير متوسط" : score>=50?"ناجح بتقدير مقبول": "راسب" }`)
+  }
+  return(
+    <div className="min-h-screen bg-gray-50 p-8 flex justify-center">
+      <div className="w-full max-w-md">
+      <h1 className="text-2xl font-bold text-center text-blue-800 mb-16">نظام تقييم الطلاب</h1>
+      <div className="grid grid-cols-2 gap-4">
+        {students.map((student)=> (
+          <Student
+          key={student.id}
+          name={student.name}
+          score={student.score}
+          onMassage={()=> handlonclick(student.id, student.name, student.score)}
+          />
+        ))}
+      </div>
+      </div>
+    </div>
+  )
+}
+
+  
