@@ -247,21 +247,48 @@ export default function App(){
     {id: 3, name: "ahmed", score: 78},
     {id: 4, name: "suha", score: 86},
   ])
+  const[namestudent, setstudentname] =useState<string>("");
+  const[scorestudent, setscorestudent] =useState<number>(0);
 
-  const handlonclick=(id:number, name:string, score:number)=>{
-    alert(`${score>=90 ? "ناجح بتقدير امتياز  ": score >=80 ? "ناجح بتقدير جيد جدا" : score>=70 ? "ناجح بتقدير جيد": score>=60? "ناجح بتقدير متوسط" : score>=50?"ناجح بتقدير مقبول": "راسب" }`)
+  const handleAdd=()=>{
+    if(namestudent !== ""){
+    const newStudent = {id:Date.now(), name:namestudent, score:scorestudent};
+    setStudents([...students, newStudent]);
+    setstudentname("");
+    setscorestudent(0);
+    }
   }
+
+  const handledelete=(id: number)=>{
+    setStudents(students.filter((student)=> student.id !== id));
+  }
+
+  /*const handlonclick=(score:number)=>{
+    alert(`${score>=90 ? "ناجح بتقدير امتياز  ": score >=80 ? "ناجح بتقدير جيد جدا" : score>=70 ? "ناجح بتقدير جيد": score>=60? "ناجح بتقدير متوسط" : score>=50?"ناجح بتقدير مقبول": "راسب" }`)
+  }*/
   return(
     <div className="min-h-screen bg-gray-50 p-8 flex justify-center">
       <div className="w-full max-w-md">
       <h1 className="text-2xl font-bold text-center text-blue-800 mb-16">نظام تقييم الطلاب</h1>
+      <div className="flex flex-col gap-2 mb-6">
+        <input className="flex-1 p-2 border-2 border-blue-800 rounded outline-none  text-black "
+         type="text" placeholder="اكتب الاسم"
+         value={namestudent} 
+         onChange={(e)=> setstudentname(e.target.value)}></input>
+         <input className="flex-1 p-2 border-2 border-blue-800 rounded outline-none  text-black"
+         type="text" placeholder="اكتب الدرجة"
+         value={scorestudent} 
+         onChange={(e)=> setscorestudent(Number(e.target.value))}></input>
+         <button className="py-4 px-4 bg-blue-800 text-white rounded cursor-pointer" onClick={handleAdd}>اضافة</button>
+      </div>
       <div className="grid grid-cols-2 gap-4">
-        {students.map((student)=> (
+        {students.map((students)=> (
           <Student
-          key={student.id}
-          name={student.name}
-          score={student.score}
-          onMassage={()=> handlonclick(student.id, student.name, student.score)}
+          key={students.id}
+          name={students.name}
+          score={students.score}
+         /* onMassage={()=> handlonclick(students.score)}*/
+          onDelete={()=> handledelete(students.id)}
           />
         ))}
       </div>
