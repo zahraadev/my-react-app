@@ -249,6 +249,7 @@ export default function App(){
   ])
   const[namestudent, setstudentname] =useState<string>("");
   const[scorestudent, setscorestudent] =useState<number>(0);
+  
 
   const handleAdd=()=>{
     if(namestudent !== ""){
@@ -262,6 +263,12 @@ export default function App(){
   const handledelete=(id: number)=>{
     setStudents(students.filter((student)=> student.id !== id));
   }
+
+  const updatestudent= (id: number, newname: string, newscore:number) => {
+    setStudents(students.map(student => student.id === id ? {...student, name: newname, score: newscore} : student));
+  }
+
+  
 
   /*const handlonclick=(score:number)=>{
     alert(`${score>=90 ? "ناجح بتقدير امتياز  ": score >=80 ? "ناجح بتقدير جيد جدا" : score>=70 ? "ناجح بتقدير جيد": score>=60? "ناجح بتقدير متوسط" : score>=50?"ناجح بتقدير مقبول": "راسب" }`)
@@ -282,13 +289,15 @@ export default function App(){
          <button className="py-4 px-4 bg-blue-800 text-white rounded cursor-pointer" onClick={handleAdd}>اضافة</button>
       </div>
       <div className="grid grid-cols-2 gap-4">
-        {students.map((students)=> (
+        {students.map((student)=> (
           <Student
-          key={students.id}
-          name={students.name}
-          score={students.score}
+          key={student.id}
+          id={student.id}
+          name={student.name}
+          score={student.score}
          /* onMassage={()=> handlonclick(students.score)}*/
-          onDelete={()=> handledelete(students.id)}
+          onDelete={()=> handledelete(student.id)}
+          onUpdate={updatestudent}
           />
         ))}
       </div>
