@@ -229,81 +229,90 @@ export default function App() {
     </div>
   );
 }*/
-
 import { useState } from "react";
 import Student from "./components/Student";
 
-interface students{
-  id : number;
+interface StudentType {
+  id: number;
   name: string;
   score: number;
 }
 
-export default function App(){
+export default function App() {
+  const [students, setStudents] = useState<StudentType[]>([
+    { id: 1, name: "سارة محمود", score: 92 },
+    { id: 2, name: "أحمد علي", score: 85 },
+  ]);
 
-  const[students, setStudents] = useState<students[]>([
-    {id: 1, name: "zahraa", score: 99},
-    {id: 2, name: "ali", score: 45},
-    {id: 3, name: "ahmed", score: 78},
-    {id: 4, name: "suha", score: 86},
-  ])
-  const[namestudent, setstudentname] =useState<string>("");
-  const[scorestudent, setscorestudent] =useState<number>(0);
-  
+  // States لحقول الإضافة الجديدة
+  const [addName, setAddName] = useState("");
+  const [addScore, setAddScore] = useState("");
 
-  const handleAdd=()=>{
-    if(namestudent !== ""){
-    const newStudent = {id:Date.now(), name:namestudent, score:scorestudent};
-    setStudents([...students, newStudent]);
-    setstudentname("");
-    setscorestudent(0);
+  // دالة الإضافة
+  const handleAdd = () => {
+    if (addName && addScore) {
+      const newStudent = {
+        id: Math.random(),
+        name: addName,
+        score: Number(addScore),
+      };
+      setStudents([...students, newStudent]);
+      setAddName(""); // تصغير الحقول بعد الإضافة
+      setAddScore("");
     }
-  }
+  };
 
-  const handledelete=(id: number)=>{
-    setStudents(students.filter((student)=> student.id !== id));
-  }
+  const updateStudent = (id: number, newName: string, newScore: number) => {
+    setStudents(students.map(s => s.id === id ? { ...s, name: newName, score: newScore } : s));
+  };
 
-  const updatestudent= (id: number, newname: string, newscore:number) => {
-    setStudents(students.map(student => student.id === id ? {...student, name: newname, score: newscore} : student));
-  }
+  const deleteStudent = (id: number) => {
+    setStudents(students.filter(s => s.id !== id));
+  };
 
-  
+  return (
+    <div className="min-h-screen bg-gray-100 p-8" dir="rtl">
+      <div className="max-w-2xl mx-auto">
+        <h1 className="text-2xl font-bold text-center mb-8 text-blue-900">قائمة درجات الطلاب</h1>
 
-  /*const handlonclick=(score:number)=>{
-    alert(`${score>=90 ? "ناجح بتقدير امتياز  ": score >=80 ? "ناجح بتقدير جيد جدا" : score>=70 ? "ناجح بتقدير جيد": score>=60? "ناجح بتقدير متوسط" : score>=50?"ناجح بتقدير مقبول": "راسب" }`)
-  }*/
-  return(
-    <div className="min-h-screen bg-gray-50 p-8 flex justify-center">
-      <div className="w-full max-w-md">
-      <h1 className="text-2xl font-bold text-center text-blue-800 mb-16">نظام تقييم الطلاب</h1>
-      <div className="flex flex-col gap-2 mb-6">
-        <input className="flex-1 p-2 border-2 border-blue-800 rounded outline-none  text-black "
-         type="text" placeholder="اكتب الاسم"
-         value={namestudent} 
-         onChange={(e)=> setstudentname(e.target.value)}></input>
-         <input className="flex-1 p-2 border-2 border-blue-800 rounded outline-none  text-black"
-         type="text" placeholder="اكتب الدرجة"
-         value={scorestudent} 
-         onChange={(e)=> setscorestudent(Number(e.target.value))}></input>
-         <button className="py-4 px-4 bg-blue-800 text-white rounded cursor-pointer" onClick={handleAdd}>اضافة</button>
-      </div>
-      <div className="grid grid-cols-2 gap-4">
-        {students.map((student)=> (
-          <Student
-          key={student.id}
-          id={student.id}
-          name={student.name}
-          score={student.score}
-         /* onMassage={()=> handlonclick(students.score)}*/
-          onDelete={()=> handledelete(student.id)}
-          onUpdate={updatestudent}
+        {/* --- هذا هو قسم الإضافة اللي جان ناقص --- */}
+        <div className="bg-white p-6 rounded-xl shadow-sm mb-8 flex gap-4 justify-center items-center">
+          <input
+            value={addName}
+            onChange={(e) => setAddName(e.target.value)}
+            placeholder="اسم الطالب"
+            className="border-2 border-gray-100 p-2 rounded-lg focus:border-blue-400 outline-none text-black font-bold"
           />
-        ))}
-      </div>
+          <input
+            type="number"
+            value={addScore}
+            onChange={(e) => setAddScore(e.target.value)}
+            placeholder="الدرجة"
+            className="border-2 border-gray-100 p-2 rounded-lg w-24 focus:border-blue-400 outline-none text-black font-bold"
+          />
+          <button 
+            onClick={handleAdd}
+            className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 font-bold transition-all"
+          >
+            إضافة
+          </button>
+        </div>
+
+        {/* عرض البطاقات */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {students.map((student) => (
+            <Student
+              key={student.id}
+              id={student.id}
+              name={student.name}
+              score={student.score}
+              onDelete={() => deleteStudent(student.id)}
+              onUpdate={updateStudent}
+              onMassage={() => {}}
+            />
+          ))}
+        </div>
       </div>
     </div>
-  )
+  );
 }
-
-  
