@@ -247,6 +247,10 @@ export default function App() {
   // States لحقول الإضافة الجديدة
   const [addName, setAddName] = useState("");
   const [addScore, setAddScore] = useState("");
+  
+
+  const totalscore = students.reduce((sum, student)=> sum + student.score, 0);
+  const average = students.length > 0 ? (totalscore/students.length).toFixed(1) : 0;
 
   // دالة الإضافة
   const handleAdd = () => {
@@ -274,7 +278,16 @@ export default function App() {
     <div className="min-h-screen bg-gray-100 p-8" dir="rtl">
       <div className="max-w-2xl mx-auto">
         <h1 className="text-2xl font-bold text-center mb-8 text-blue-900">قائمة درجات الطلاب</h1>
-
+        <div className="bg-blue-50 p-4 rounded-xl mb-6 flex justify-around border-2 border-blue-200">
+        <div className="text-center">
+        <p className="text-gray-500 text-sm">مجموع الدرجات</p>
+        <p className="text-2xl font-bold text-blue-700">{totalscore}</p>
+        </div>
+        <div className="text-center">
+        <p className="text-gray-500 text-sm">معدل الطلاب</p>
+        <p className="text-2xl font-bold text-green-600">{average}%</p>
+      </div>
+   </div>
         {/* --- هذا هو قسم الإضافة اللي جان ناقص --- */}
         <div className="bg-white p-6 rounded-xl shadow-sm mb-8 flex gap-4 justify-center items-center">
           <input
