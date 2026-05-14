@@ -229,6 +229,7 @@ export default function App() {
     </div>
   );
 }*/
+/*
 import { useState } from "react";
 import Student from "./components/Student";
 
@@ -288,7 +289,7 @@ export default function App() {
         <p className="text-2xl font-bold text-green-600">{average}%</p>
       </div>
    </div>
-        {/* --- هذا هو قسم الإضافة اللي جان ناقص --- */}
+        {/* --- هذا هو قسم الإضافة اللي جان ناقص --- *//*
         <div className="bg-white p-6 rounded-xl shadow-sm mb-8 flex gap-4 justify-center items-center">
           <input
             value={addName}
@@ -311,7 +312,7 @@ export default function App() {
           </button>
         </div>
 
-        {/* عرض البطاقات */}
+        {/* عرض البطاقات *//*
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {students.map((student) => (
             <Student
@@ -328,4 +329,63 @@ export default function App() {
       </div>
     </div>
   );
+}*/
+
+
+import { useState } from "react";
+import Wishes from "./components/Wishes";
+
+
+interface wishtype{
+  id: number,
+  title: string,
+}
+
+export default function App(){
+  const[wishes, setwishes] = useState<wishtype[]>([
+  {id:1, title: "السفر"},
+  {id:2, title: "النجاح"},
+])
+const[text, settext] = useState("");
+
+const handleaddwish =()=>{
+  if(text.trim()!==""){
+  const newwish ={
+    id: Date.now(),
+    title: text,
+  }
+  setwishes([...wishes, newwish]);
+  settext("");
+}
+}
+const handledlete=(id:number)=>{
+  setwishes(wishes.filter(wish => wish.id != id));
+}
+
+const handleupdate= (id: number, newname: string)=>{
+  setwishes(wishes.map(wish=> wish.id === id ?{...wish, title: newname}: wish));
+}
+
+  return(
+    <div className="min-h-screen bg-gray-100 p-8"dir="rtl">
+      <div className="max-w-md mx-auto">
+        <h1 className="text-2xl font-bold text-center text-pink-400 mt-12">قائمة الامنيات</h1>
+         <div className="flex justify-center gap-4 mt-12">
+            <input className="w-full max-w-md border-2 border-pink-300 rounded outline-none" placeholder="اكتب الامنية" value={text} onChange={(e)=> settext(e.target.value)}></input>
+            <button onClick={handleaddwish} className="px-4 py-2 rounded bg-blue-300 text-white cursor-pointer hover:bg-blue-200">اضافة</button>
+        </div>
+        <div className="flex flex-col justify-center items-center w-full max-w-md mx-auto gap-4 mt-12">
+          {wishes.map((wish)=>(
+            <Wishes
+            id={wish.id}
+            key={wish.id}
+            title={wish.title}
+            ondelete={()=> handledlete(wish.id)}
+            onupdate={(newtitle)=>handleupdate(wish.id, newtitle)}
+            />
+          ))}
+        </div>
+      </div>
+    </div>
+  )
 }
