@@ -339,32 +339,42 @@ import Wishes from "./components/Wishes";
 interface wishtype{
   id: number,
   title: string,
+  iscompleted: boolean;
 }
 
 export default function App(){
   const[wishes, setwishes] = useState<wishtype[]>([
-  {id:1, title: "السفر"},
-  {id:2, title: "النجاح"},
+  {id:1, title: "السفر",iscompleted:false},
+  {id:2, title: "النجاح",iscompleted:false},
 ])
 const[text, settext] = useState("");
+const[serachterm, setsearchterm] = useState("");
 
 const handleaddwish =()=>{
   if(text.trim()!==""){
   const newwish ={
     id: Date.now(),
     title: text,
+    iscompleted: false,
   }
   setwishes([...wishes, newwish]);
   settext("");
 }
 }
+
+const handletoggle = (id: number)=>{
+  const updatewishes = wishes.map((wish)=> wish.id === id ? {...wish, iscompleted: !wish.iscompleted}: wish);
+  setwishes(updatewishes);
+}
 const handledlete=(id:number)=>{
-  setwishes(wishes.filter(wish => wish.id != id));
+  setwishes(wishes.filter(wish => wish.id !== id));
 }
 
 const handleupdate= (id: number, newname: string)=>{
   setwishes(wishes.map(wish=> wish.id === id ?{...wish, title: newname}: wish));
 }
+
+const filterwishes = wishes.filter((wish) => wish.title.toLowerCase().includes(serachterm.toLowerCase()));
 
   return(
     <div className="min-h-screen bg-gray-100 p-8"dir="rtl">
@@ -374,14 +384,17 @@ const handleupdate= (id: number, newname: string)=>{
             <input className="w-full max-w-md border-2 border-pink-300 rounded outline-none" placeholder="اكتب الامنية" value={text} onChange={(e)=> settext(e.target.value)}></input>
             <button onClick={handleaddwish} className="px-4 py-2 rounded bg-blue-300 text-white cursor-pointer hover:bg-blue-200">اضافة</button>
         </div>
+        <input type="text" className="w-full p-1 max-w-md border-2 border-pink-300 rounded outline-none mt-8"value={serachterm} onChange={(e)=> setsearchterm(e.target.value)} placeholder="ابحث عن امنية"/>
         <div className="flex flex-col justify-center items-center w-full max-w-md mx-auto gap-4 mt-12">
-          {wishes.map((wish)=>(
+          {filterwishes.map((wish)=>(
             <Wishes
             id={wish.id}
             key={wish.id}
             title={wish.title}
+            iscompleted={wish.iscompleted}
+            ontoggle={()=>handletoggle(wish.id)}
             ondelete={()=> handledlete(wish.id)}
-            onupdate={(newtitle)=>handleupdate(wish.id, newtitle)}
+            onupdate={(newtitle)=>handleupdate(wish.id,newtitle)}
             />
           ))}
         </div>
