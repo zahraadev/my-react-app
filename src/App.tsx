@@ -556,7 +556,8 @@ export default function App() {
     </div>
   );
 }*/
-
+/*
+import { Input, Button } from "@nextui-org/react";
 import { useState, useEffect } from "react";
 import PerfumeItem from "./components/Berfeum";
 
@@ -647,7 +648,7 @@ export default function App() {
         </h1>
         <p className="text-center text-gray-500 mb-8">إدارة مجموعتك العطرية الخاصة بسهولة</p>
 
-        {/* 📊 بطاقات الإحصائيات (تم تحديد max-w-md لتصغير العرض وتوسيطها) */}
+        {/* 📊 بطاقات الإحصائيات (تم تحديد max-w-md لتصغير العرض وتوسيطها) 
         <div className="grid grid-cols-2 gap-4 mb-8 max-w-md mx-auto">
           <div className="bg-white py-4 px-6 rounded-3xl text-center border border-purple-100 shadow-sm">
             <p className="text-gray-400 text-xs font-bold mb-1">عدد العطور</p>
@@ -659,7 +660,7 @@ export default function App() {
           </div>
         </div>
 
-        {/* ➕ حقول الإدخال لإضافة عطر جديد */}
+        {/* ➕ حقول الإدخال لإضافة عطر جديد 
         <div className="bg-white p-6 rounded-3xl border border-purple-100 shadow-sm mb-6">
           <div className="flex flex-col gap-3">
             <input
@@ -695,7 +696,7 @@ export default function App() {
                 placeholder="سعر العطر"
               />
 
-              {/* حقل الخيارات المنسدلة للفصل (شتوي/صيفي) */}
+              {/* حقل الخيارات المنسدلة للفصل (شتوي/صيفي) 
               <select
                 value={season}
                 onChange={(e) => setSeason(e.target.value)}
@@ -715,7 +716,7 @@ export default function App() {
           </div>
         </div>
 
-        {/* 🔍 حقل البحث */}
+        {/* 🔍 حقل البحث 
         <div className="relative mb-6">
           <input
             className="w-full border border-purple-100 rounded-xl outline-none focus:border-pink-500 p-3 text-black bg-white transition text-sm shadow-sm"
@@ -726,7 +727,7 @@ export default function App() {
           />
         </div>
 
-        {/* 📜 عرض قائمة العطور */}
+        {/* 📜 عرض قائمة العطور 
         <div className="flex flex-col gap-3">
           {filterPerfumes.length === 0 ? (
             <div className="text-center text-gray-400 py-8 bg-white rounded-3xl border border-pink-50 shadow-sm text-sm">
@@ -753,4 +754,142 @@ export default function App() {
       </div>
     </div>
   );
+}*/
+
+
+import { useEffect, useState } from "react";
+import TaskCard from "./TaskCard";
+
+interface game {
+  id: number;
+  nametask: string;
+  difftask: string;
+  scoretask: number;
+  iscompleted: boolean;
+  subtask: string[]; // 👈 ضفناها هنا بالـ interface حتى الـ TypeScript يشوفها صح
+}
+
+export default function App() {
+
+  const [games, setgames] = useState<game[]>(() => {
+    const saved = localStorage.getItem("games");
+    if (saved) {
+      return JSON.parse(saved);
+    }
+    return [
+      { id: 1, nametask: "sport", difftask: "easy", scoretask: 80, iscompleted: false, subtask: ["football", "run for 15 min", "drink later water"] }, // 👈 تعديل: difftask و scoretask
+      { id: 2, nametask: "study", difftask: "medium", scoretask: 60, iscompleted: false, subtask: ["study for 2 hours", "drink orange juise", "sleep 1 hours"] }, // 👈 تعديل: difftask و scoretask
+    ]
+  });
+  const [name, setname] = useState<string>("")
+  const [difficult, setdifficult] = useState<string>("");
+  const [scortask, setscortask] = useState<Number>(0);
+  const [search, setsearch] = useState<string>("");
+
+  useEffect(() => {
+    localStorage.setItem("games", JSON.stringify(games))
+  }, [games]);
+
+  const handladd = () => {
+    if (name.trim() !== "" && difficult.trim() !== "" && scortask !== 0) {
+      const newgame: game = {
+        id: Date.now(),
+        nametask: name,
+        difftask: difficult,
+        scoretask: Number(scortask),
+        iscompleted: false,
+        subtask: [], // 👈 تضاف مصفوفة فارغة للمهام الجديدة حتى ما تسبب خطأ
+      }
+      setgames([...games, newgame]);
+      setname("");
+      setdifficult("");
+      setscortask(0);
+    }
+  }
+
+  const handledelete = (id: number) => {
+    setgames(games.filter(game => game.id !== id));
+  }
+
+  const handleupdate = (id: number, newname: string, newdifficult: string, newscore: number) => {
+    setgames(games.map(game => game.id === id ? { ...game, nametask: newname, difftask: newdifficult, scoretask: newscore } : game)); // 👈 تعديل: difftask
+  }
+
+  const filterdtask = games.filter(game => game.nametask.toLowerCase().includes(search.toLowerCase()));
+
+
+  return (
+    <div className="min-h-screen bg-slate-900 p-0 m-0 w-full text-white flex flex-col items-center">
+      <div className="w-full text-white py-4 px-6 flex justify-between items-center border-b border-slate-700 bg-slate-800 shadow-md">
+        <h1 className="text-xl font-bold text-gray-500 pl-12">Task Quest</h1>
+        <div className="bg-slate-900/50 px-4 py-1.5 rounded-xl border border-slate-700 text-yellow-400 font-bold text-lg">
+          ⭐ {Number(scortask)} XP
+        </div>
+        <span className="text-sm font-bold text-green-400 bg-green-950/40 px-3 py-1 rounded-lg border border-green-900/50">
+          Level 1 Coder 🏆
+        </span>
+      </div>
+      <div className="max-w-2xl mx-auto w-full bg-slate-800  border-slate-600 border-2 rounded-xl shadow-md p-4 mt-6 items-center ">
+        <h1 className="text-slate-400 font-bold text-center">New Mession ⚔️</h1>
+        <div className="bg-slate-600 flex justify-between items-center gap-4 mt-6 rounded-lg p-8">
+          <input className="border border-slate-600 rounded-lg p-1 w-80 bg-slate-800 outline-none " type="text" value={name} onChange={(e) => setname(e.target.value)} placeholder="Enter New Task"></input>
+          <div className="flex items-center bg-slate-800 w-72 rounded-xl border border-slate-700 ">
+
+            {/* 1. زر الـ Easy */}
+            <button
+              type="button"
+              onClick={() => { setdifficult('easy'); setscortask(20) }}
+              className={`flex-1 py-2 px-3 rounded-lg text-xs font-bold transition duration-150 ${difficult === 'easy'
+                ? 'bg-salte-700 border-2 border-green-500 text-white shadow-sm'
+                : 'text-slate-400 hover:text-slate-200'
+                }`}
+            >
+              Easy
+            </button>
+
+            {/* 2. زر الـ Medium */}
+            <button
+              type="button"
+              onClick={() => { setdifficult('medium'); setscortask(50) }}
+              className={`flex-1 py-2 px-3 rounded-lg text-xs font-bold transition duration-150 ${difficult === 'medium'
+                ? 'bg-slate-700 border-2 border-yellow-500 text-white shadow-sm'
+                : 'text-slate-400 hover:text-slate-200'
+                }`}
+            >
+              Medium
+            </button>
+
+            {/* 3. زر الـ Hard */}
+            <button
+              type="button"
+              onClick={() => { setdifficult('hard'); setscortask(80) }}
+              className={`flex-1 py-2 px-3 rounded-lg text-xs font-bold transition duration-150 ${difficult === 'hard'
+                ? 'bg-slate-700 border-2 border-red-500 text-white shadow-sm'
+                : 'text-slate-400 hover:text-slate-200'
+                }`}
+            >
+              Hard
+            </button>
+          </div>
+        </div>
+        <button onClick={handladd} className="w-full rounded-lg text-slate-700 font-bold text-center bg-green-400 hover:bg-green-500 mt-6 py-1.5">Activate Mission +</button>
+      </div>
+
+      {/* 📦 حاوية الكارتات بالتصميم والتقسيم مالتچ نفسه */}
+      <div className="max-w-2xl mx-auto w-full grid grid-cols-3 md:grid-cols-2 gap-2 mt-6">
+        {games.map((game) => (
+          <TaskCard
+            key={game.id}
+            nametask={game.nametask}
+            difftask={game.difftask}
+            scoretask={String(game.scoretask)} // 👈 حولناها string لأن الـ interface مالت كارتچ يستقبلها string
+            iscompleted={game.iscompleted}
+            subtasks={game.subtask} // 👈 مررنا المصفوفة هنا لملف الابن حتى تشتغل الـ map وم تطلع شاشة بيضاء
+            ondelete={() => handledelete(game.id)}
+          />
+        ))}
+      </div>
+
+    </div>
+  )
 }
