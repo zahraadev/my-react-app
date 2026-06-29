@@ -756,7 +756,7 @@ export default function App() {
   );
 }*/
 
-
+/*
 import { useEffect, useState } from "react";
 import TaskCard from "./TaskCard";
 
@@ -835,7 +835,7 @@ export default function App() {
           <input className="border border-slate-600 rounded-lg p-1 w-80 bg-slate-800 outline-none " type="text" value={name} onChange={(e) => setname(e.target.value)} placeholder="Enter New Task"></input>
           <div className="flex items-center bg-slate-800 w-72 rounded-xl border border-slate-700 ">
 
-            {/* 1. زر الـ Easy */}
+            {/* 1. زر الـ Easy *
             <button
               type="button"
               onClick={() => { setdifficult('easy'); setscortask(20) }}
@@ -847,7 +847,7 @@ export default function App() {
               Easy
             </button>
 
-            {/* 2. زر الـ Medium */}
+            {/* 2. زر الـ Medium *
             <button
               type="button"
               onClick={() => { setdifficult('medium'); setscortask(50) }}
@@ -859,7 +859,7 @@ export default function App() {
               Medium
             </button>
 
-            {/* 3. زر الـ Hard */}
+            {/* 3. زر الـ Hard *
             <button
               type="button"
               onClick={() => { setdifficult('hard'); setscortask(80) }}
@@ -875,7 +875,7 @@ export default function App() {
         <button onClick={handladd} className="w-full rounded-lg text-slate-700 font-bold text-center bg-green-400 hover:bg-green-500 mt-6 py-1.5">Activate Mission +</button>
       </div>
 
-      {/* 📦 حاوية الكارتات بالتصميم والتقسيم مالتچ نفسه */}
+      {/* 📦 حاوية الكارتات بالتصميم والتقسيم مالتچ نفسه *
       <div className="max-w-2xl mx-auto w-full grid grid-cols-3 md:grid-cols-2 gap-2 mt-6">
         {games.map((game) => (
           <TaskCard
@@ -892,4 +892,72 @@ export default function App() {
 
     </div>
   )
+}*/
+import { useState } from "react";
+import SkinCareHub from "./components/SkincareHub";
+import FitnessHub from "./components/FitnessHub";
+import PerfumeLibrary from "./components/PerfumeLibrary";
+
+export default function App() {
+
+  const [activeTab, setActiveTab] = useState<"skincare" | "fitness" | "perfumes">("skincare");
+
+  return (
+    <div className="min-h-screen bg-stone-50 text-stone-900 font-sans flex flex-col items-center p-6 antialiased">
+
+      {/*  العنوان الرئيسي */}
+      <div className="text-center my-6">
+        <h1 className="text-3xl font-black bg-gradient-to-r from-rose-400 via-pink-500 to-purple-500 bg-clip-text text-transparent">
+          عالم الجمال والصحة 👑
+        </h1>
+        <p className="text-sm text-stone-500 mt-1.5 font-medium">لوحة التحكم الشخصية الذكية للعناية والصحة</p>
+      </div>
+
+      {/*أزرار التنقل  */}
+      <div className="w-full max-w-4xl bg-white border border-stone-200/80 p-2 rounded-2xl flex justify-center gap-2 mb-8 shadow-sm">
+
+        {/*  زر روتين العناية */}
+        <button
+          onClick={() => setActiveTab("skincare")}
+          className={`flex-1 text-sm font-bold py-3 px-4 rounded-xl transition-all duration-200 ${activeTab === "skincare"
+            ? "bg-rose-100 text-rose-700 shadow-sm border border-rose-200/50"
+            : "text-stone-500 hover:text-stone-800 hover:bg-stone-50"
+            }`}
+        >
+          روتين العناية 🧴
+        </button>
+
+        {/*  زر مصنع العضلات */}
+        <button
+          onClick={() => setActiveTab("fitness")}
+          className={`flex-1 text-sm font-bold py-3 px-4 rounded-xl transition-all duration-200 ${activeTab === "fitness"
+            ? "bg-emerald-100 text-emerald-700 shadow-sm border border-emerald-200/50 "
+            : "text-stone-500 hover:text-stone-800 hover:bg-stone-50"
+            }`}
+        >
+          مصنع العضلات 🏋️‍♀️
+        </button>
+
+        {/*  زر مكتبة العطور */}
+        <button
+          onClick={() => setActiveTab("perfumes")}
+          className={`flex-1 text-sm font-bold py-3 px-4 rounded-xl transition-all duration-200 ${activeTab === "perfumes"
+            ? "bg-purple-100 text-purple-700 shadow-sm border border-purple-200/50"
+            : "text-stone-500 hover:text-stone-800 hover:bg-stone-50"
+            }`}
+        >
+          مكتبة العطور ✨
+        </button>
+
+      </div>
+
+      {/*  عرض الأقسام ديناميكياً */}
+      <div className="w-full max-w-4xl transition-all duration-300">
+        {activeTab === "skincare" && <SkinCareHub />}
+        {activeTab === "fitness" && <FitnessHub />}
+        {activeTab === "perfumes" && <PerfumeLibrary />}
+      </div>
+
+    </div>
+  );
 }
